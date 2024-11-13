@@ -1,33 +1,43 @@
-#include<stdio.h>
-#include<string.h>
+ #include<stdio.h>
+
+int calculate_gem_elements(char arr[][100],int n){
+    int present[26];
+    for(int i=0 ; i<26 ; i++){
+        present[i] = 1;
+    }
+
+    for(int i=0 ; i<n ; i++){
+        int tracker[26] = {0}; //0 denotes that gem stone is not present
+
+        for(int j=0 ; arr[i][j] != '\0' ; j++){
+            tracker[arr[i][j] - 'a'] = 1; // 1 denotes that gem stone is present
+        }
+
+        for(int k=0 ; k<26 ; k++){
+            present[k] = tracker[k] & present[k];
+        }
+    }
+
+    int count = 0;
+    for(int i=0 ; i<26 ; i++){
+        if(present[i] == 1){
+            count++;
+        }
+    }
+
+    return count;
+}
 
 int main(){
     int n;
-    printf("Enter the number of test cases : ");
+    printf("Enter the number of inputs : ");
     scanf("%d",&n);
-    printf("Enter the words\n");
 
     char arr[n][100];
+
     for(int i=0 ; i<n ; i++){
-       scanf("%s",&arr[i]); 
+        scanf("%s",&arr[i]);
     }
 
-    int swap,i,j;
-    for(i=0 ; i<n ; i++){
-        for(j=strlen(arr[i])-1 ; j>0 ; j--){
-            if(arr[i][j] > arr[i][j-1]){
-                swap = arr[i][j];
-                arr[i][j] = arr[i][j-1];
-                arr[i][j-1] = swap;
-                break;
-            }
-        }
-        if(j == 0){
-            printf("No answer\n");
-        }
-        else{
-            printf("%s\n",arr[i]);
-        }
-    }
-
+    printf("The number of gem elements is : %d",calculate_gem_elements(arr,n));
 }
