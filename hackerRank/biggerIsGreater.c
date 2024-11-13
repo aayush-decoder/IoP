@@ -1,56 +1,43 @@
-#include <stdio.h>
-#include <string.h>
+ #include<stdio.h>
 
-void swap(char *a, char *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+int calculate_gem_elements(char arr[][100],int n){
+    int present[26];
+    for(int i=0 ; i<26 ; i++){
+        present[i] = 1;
+    }
+
+    for(int i=0 ; i<n ; i++){
+        int tracker[26] = {0}; //0 denotes that gem stone is not present
+
+        for(int j=0 ; arr[i][j] != '\0' ; j++){
+            tracker[arr[i][j] - 'a'] = 1; // 1 denotes that gem stone is present
+        }
+
+        for(int k=0 ; k<26 ; k++){
+            present[k] = tracker[k] & present[k];
+        }
+    }
+
+    int count = 0;
+    for(int i=0 ; i<26 ; i++){
+        if(present[i] == 1){
+            count++;
+        }
+    }
+
+    return count;
 }
 
-int main() {
-    int num;
-    int len;
-    scanf("%d", &num);
+int main(){
+    int n;
+    printf("Enter the number of inputs : ");
+    scanf("%d",&n);
 
-    char words[num][100];
+    char arr[n][100];
 
-    for (int i=0; i<num; i++) {
-        scanf("%s", words[i]);
+    for(int i=0 ; i<n ; i++){
+        scanf("%s",&arr[i]);
     }
 
-    for (int i=0; i<num; i++) {
-
-        len=0;
-        for (int c=0; c<100; c++) {
-            if (words[i][c] == '\0') {
-                break;
-            }
-            len++;
-        }
-int isSwapped = 0;
-        for (int k=len; k>0; k--) {
-
-            if (words[i][k-1] < words[i][k]) {
-                    swap(&words[i][k-1], &words[i][k]);
-                    isSwapped = 1;
-                }
-            if (words[i][k-1] < words[i][k]) {
-                    swap(&words[i][k-1], &words[i][k]);
-                    isSwapped = 1;
-                }
-           if (isSwapped == 0) {
-                // if (k == 0) {  
-                    strcpy(words[i], "no answer");
-                // }
-                break;
-            }
-        }
-    }
-
-printf("\nOUTPUT: \n");
-
-    for (int i=0; i<num; i++) {
-        printf("%s\n%d", words[i], len);
-    }
-    return 0;
+    printf("The number of gem elements is : %d",calculate_gem_elements(arr,n));
 }
